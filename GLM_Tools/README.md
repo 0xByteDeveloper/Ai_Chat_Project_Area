@@ -17,7 +17,7 @@ AI her oturumun başında buradan **STATE + worklog + tasks** okur, her modül b
 
 | Durum | Yapılacak |
 |---|---|
-| **Yeni chat açtım** | `PROMPTS/NEW_CHAT_BOOTSTRAP_PROMPT.md` içeriğini (token alanlarını doldurup) ilk mesaj olarak yapıştır |
+| **Yeni chat açtım** | `PROMPTS/KALICI_MASTER_PROMPT.md` içeriğini ilk mesaj olarak yapıştır — değişen tek 2 alan: `*REPO*` (yeni projenin repo adı) ve `*GÖREV*` (boş bırakılırsa AI tasks.json'daki açık görevden devam eder). PAT satırı kullanıcı kayıtlı kopyasında gömülüdür; kopya kaybolursa bu şablondan alınıp `*TOKEN*` yerine güncel PAT yazılır. (`NEW_CHAT_BOOTSTRAP_PROMPT.md` emekliye ayrıldı) |
 | **Her görev mesajında** | `PROMPTS/GOD_MOD_MASTER_PROMPT.md` → BÖLÜM 2 (kısa sürüm, 5 satır) mesajın en üstüne |
 | **Uzun/kritik iş başlattım** | `PROMPTS/GOD_MOD_MASTER_PROMPT.md` → BÖLÜM 1 (tam sürüm) + `PROMPTS/SANDBOX_SURVIVAL_PROMPT.md` |
 | **Token veriyorum** | `PROMPTS/TOKEN_ATTACHMENT_TEMPLATE.md` biçimini kullan (AI'ya nasıl sunulacak) |
