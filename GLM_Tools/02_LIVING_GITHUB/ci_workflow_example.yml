@@ -1,0 +1,43 @@
+# GLM_Tools/02 — CI zinciri örneği (push → derle → test)
+# KURULUM: repo kökünde çalıştır:
+#   mkdir -p .github/workflows
+#   cp GLM_Tools/02_LIVING_GITHUB/ci_workflow_example.yml .github/workflows/ci.yml
+# Sonra her push'ta Actions otomatik derler + testleri koşturur.
+# AI "testler geçti" derse ve bu kırmızıysa → yalan anında yakalanır (tamamlandı illüzyonu ölür).
+
+name: ci
+on:
+  push:
+    branches: [main, "exp/**"]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python araçları hazırla
+        run: |
+          python3 -m pip install --upgrade pip
+          # testlerin ihtiyaç duyduğu paketler (projeye göre düzenle):
+          # pip install pytest
+
+      - name: Kanıt denetimi (GLM_Tools audit)
+        run: |
+          if [ -f GLM_Tools/05_MODULE_TEST_PROOF/module_test_proof.py ]; then
+            python3 GLM_Tools/05_MODULE_TEST_PROOF/module_test_proof.py audit --root . || true
+          fi
+
+      - name: Proje testleri (C++ örneği — projeye göre değiştir)
+        run: |
+          echo "TODO: projeye özel derleme+test adımlarını buraya bağla"
+          # örnek CMake:
+          # cmake -S . -B build && cmake --build build -j && ctest --test-dir build --output-on-failure
+          # örnek Python:
+          # pytest tests/ -v
+
+      - name: Özet kanıt dosyası
+        if: always()
+        run: |
+          mkdir -p proofs/ci
+          echo "CI run: ${{ github.run_id }} sha: ${{ github.sha }} sonuç: ${{ job.status }} $(date -u)" >> proofs/ci/last_ci.txt

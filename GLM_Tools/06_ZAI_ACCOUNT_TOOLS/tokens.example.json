@@ -1,0 +1,8 @@
+{
+  "users": [
+    { "name": "User1", "token": "<ZAI_JWT_USER1_BURAYA>" },
+    { "name": "User2", "token": "<ZAI_JWT_USER2_BURAYA>" },
+    { "name": "User3", "token": "<ZAI_JWT_USER3_BURAYA>" }
+  ],
+  "_not": "Bu dosya .gitignore'da: tokens.json repoya ASLA commit edilmez. Tokenleri rotate ettikçe burada güncelle."
+}

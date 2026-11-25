@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><KONU> RAPORu v1</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --line:#30363d; --txt:#e6edf3; --dim:#8b949e;
+    --blue:#58a6ff; --orange:#f78166; --green:#3fb950; --red:#f85149;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:15px/1.6 "Segoe UI",system-ui,-apple-system,sans-serif}
+  a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+  header{position:sticky;top:0;z-index:9;background:var(--panel);
+         border-bottom:1px solid var(--line);padding:14px 22px}
+  header h1{margin:0;font-size:19px}
+  header .meta{color:var(--dim);font-size:12.5px;margin-top:3px}
+  .wrap{display:flex;min-height:100vh}
+  nav.toc{width:250px;position:sticky;top:64px;height:calc(100vh - 64px);
+          overflow:auto;border-right:1px solid var(--line);padding:16px 10px;
+          font-size:13.5px;flex-shrink:0}
+  nav.toc a{display:block;color:var(--dim);padding:5px 10px;border-radius:6px}
+  nav.toc a:hover,nav.toc a.on{color:var(--txt);background:var(--panel)}
+  main{flex:1;padding:20px 26px;max-width:980px}
+  .chips{margin:0 0 14px}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:999px;
+        padding:3px 12px;margin:2px 4px 2px 0;color:var(--dim);cursor:pointer;
+        font-size:12.5px;user-select:none}
+  .chip.sel{color:var(--txt);border-color:var(--blue);background:#58a6ff22}
+  #search{width:100%;max-width:420px;background:var(--panel);color:var(--txt);
+          border:1px solid var(--line);border-radius:8px;padding:8px 12px;
+          font-size:14px;margin-bottom:14px}
+  section{margin:26px 0}
+  section h2{font-size:17px;color:var(--blue);border-bottom:1px solid var(--line);
+             padding-bottom:6px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:14px 16px;margin:10px 0}
+  .card .q{font-weight:600;font-size:15px}
+  .card .verdict{margin:6px 0;font-size:14px}
+  .verdict.ok{color:var(--green)} .verdict.risk{color:var(--red)}
+  .verdict.warn{color:var(--orange)} .verdict.info{color:var(--blue)}
+  .card .act{color:var(--orange);font-size:13.5px;margin-top:8px}
+  details{margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
+  summary{cursor:pointer;color:var(--dim);font-size:13px}
+  .proof{color:var(--dim);font-size:13px;margin-top:6px}
+  code,pre{font:12.5px/1.55 ui-monospace,Consolas,monospace;background:#0b0f14;
+           border:1px solid var(--line);border-radius:6px}
+  code{padding:1px 5px} pre{padding:10px 12px;overflow:auto}
+  .tag{display:inline-block;font-size:11px;border-radius:4px;padding:1px 7px;
+       margin-left:6px;vertical-align:1px}
+  .tag.koruma{background:#f7816633;color:var(--orange)}
+  .tag.cozum{background:#58a6ff33;color:var(--blue)}
+  .tag.ui{background:#3fb95033;color:var(--green)}
+  .tag.fabrika{background:#bc8cff33;color:#bc8cff}
+  footer{border-top:1px solid var(--line);color:var(--dim);font-size:12px;
+         padding:14px 26px}
+  @media(max-width:800px){nav.toc{display:none} main{padding:16px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>&lt;KONU&gt; RAPORu <span style="color:var(--dim)">v1</span></h1>
+  <div class="meta">2026-11-26 · üreten: GLM (chat.z.ai) · kaynak: &lt;repo/sohbet ölçümleri&gt; · GLM_Tools/09 ev stili</div>
+</header>
+<div class="wrap">
+<nav class="toc" id="toc">
+  <a href="#b1">1. Bölüm</a>
+  <a href="#b2">2. Bölüm</a>
+  <a href="#b3">3. Bölüm</a>
+</nav>
+<main>
+  <div class="chips" id="chips">
+    <span class="chip sel" data-k="all">Tümü</span>
+    <span class="chip" data-k="koruma">Koruma</span>
+    <span class="chip" data-k="cozum">Çözüm</span>
+    <span class="chip" data-k="ui">UI Zekâsı</span>
+    <span class="chip" data-k="fabrika">Fabrika</span>
+  </div>
+  <input id="search" type="search" placeholder="Ara: vmp, maze, worklog…">
+
+  <section id="b1" data-k="koruma">
+    <h2>1. Bölüm — örnek kart yapısı</h2>
+    <div class="card" data-k="koruma">
+      <div class="q">SORU/BAŞLIK: örnek tespit <span class="tag koruma">koruma</span></div>
+      <div class="verdict info">VERDICT: tek cümlelik net hüküm (renk kodlu).</div>
+      <div class="proof">KANIT: hangi ölçüm/sohbet/repo bu hükmü taşıyor.</div>
+      <details><summary>Detay / kanıt çıktısı</summary>
+        <pre>komut: ...
+çıktı: 12/12 PASS</pre>
+      </details>
+      <div class="act">☐ AKSİYON: somut tek adım</div>
+    </div>
+  </section>
+
+  <section id="b2" data-k="cozum">
+    <h2>2. Bölüm</h2>
+    <div class="card" data-k="cozum">
+      <div class="q">SORU/BAŞLIK <span class="tag cozum">çözüm</span></div>
+      <div class="verdict ok">VERDICT (başarı).</div>
+      <div class="proof">KANIT.</div>
+      <div class="act">☐ AKSİYON</div>
+    </div>
+  </section>
+
+  <section id="b3" data-k="fabrika">
+    <h2>3. Bölüm</h2>
+    <div class="card" data-k="fabrika">
+      <div class="q">SORU/BAŞLIK <span class="tag fabrika">fabrika</span></div>
+      <div class="verdict warn">VERDICT (uyarı).</div>
+      <div class="proof">KANIT.</div>
+      <div class="act">☐ AKSİYON</div>
+    </div>
+  </section>
+</main>
+</div>
+<footer>GLM_Tools/09_HTML_REPORT_STYLE · tek dosya, offline, CDN'siz · sürüm v1 → güncellerken v2</footer>
+<script>
+// --- filtre + arama + aktif TOC (gömülü, kütüphanesiz) ---
+const chips=[...document.querySelectorAll('.chip')],cards=[...document.querySelectorAll('.card')];
+function apply(){
+  const k=chips.find(c=>c.classList.contains('sel')).dataset.k,
+        q=document.getElementById('search').value.toLowerCase();
+  cards.forEach(c=>{
+    const okK=(k==='all'||c.dataset.k===k),
+          okQ=(!q||c.textContent.toLowerCase().includes(q));
+    c.style.display=(okK&&okQ)?'':'none';
+  });
+  document.querySelectorAll('section').forEach(s=>{
+    const vis=[...s.querySelectorAll('.card')].some(c=>c.style.display!=='none');
+    s.style.display=vis?'':'none';
+  });
+}
+chips.forEach(ch=>ch.onclick=()=>{chips.forEach(c=>c.classList.remove('sel'));
+  ch.classList.add('sel');apply();});
+document.getElementById('search').oninput=apply;
+// aktif TOC vurgusu
+const links=[...document.querySelectorAll('#toc a')];
+window.addEventListener('scroll',()=>{
+  let cur=links[0];
+  links.forEach(l=>{const s=document.querySelector(l.getAttribute('href'));
+    if(s&&s.getBoundingClientRect().top<120)cur=l;});
+  links.forEach(l=>l.classList.toggle('on',l===cur));
+},{passive:true});
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Token ve geçici veri asla commit edilmez
+tokens.json
+zai_export/
+__pycache__/
+*.pyc
+.selftest/

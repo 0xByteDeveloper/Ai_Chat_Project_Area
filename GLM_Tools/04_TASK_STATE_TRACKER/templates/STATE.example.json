@@ -1,0 +1,18 @@
+{
+  "project": "MVP_3.5.1_TO_3.9.4",
+  "phase": "A2-mutasyon (T-004 sürüyor)",
+  "active_repo": [
+    "https://github.com/0xByteDeveloper/XProtectArea",
+    "https://github.com/0xByteDeveloper/MVP_REVERSE"
+  ],
+  "current_worklog": 3,
+  "open_tasks": ["T-004", "T-005", "T-006"],
+  "last_files": {
+    "src/mutation/junkgen.cpp": "sha256:... (2026-11-26 15:00)",
+    "tests/test_junkgen.cpp": "sha256:... (2026-11-26 15:00)"
+  },
+  "last_request": "R-004",
+  "tests_status": "8/12 PASS (4 bekliyor: histogram eşikleri)",
+  "blockers": ["rea repo URL'i bekleniyor (T-006)"],
+  "updated_at": "2026-11-26 15:10"
+}

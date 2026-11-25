@@ -1,0 +1,56 @@
+=== KANIT: GLM_Tools v1.0 kurulum — selftest + canlı test sonuçları ===
+Tarih    : 2026-11-25 19:32
+Ortam    : Linux sandbox, Python 3.x, stdlib only
+Kanıtlayan: living_github.py push (bu dosya repoyla birlikte push'lanır)
+
+### T1) 06_ZAI_ACCOUNT_TOOLS/zai_profile_analyzer.py --selftest
+  [PASS] New Chat/boş başlık elendi
+  [PASS] TÜM mesajlar çekildi (3)
+  [PASS] araç çağrısı sayıldı (2)
+  [PASS] rapor üretildi
+  [PASS] transkript üretildi
+SELFTEST: PASS
+
+### T2) 06_ZAI_ACCOUNT_TOOLS/zai_chat_extractor.py --selftest
+  [PASS] tüm mesajlar çekildi (2)
+  [PASS] dosya kaydı bulundu (1)
+  [PASS] sohbet.md üretildi
+  [PASS] sohbet.json üretildi
+  [PASS] DOSYA_LISTESI.md üretildi
+SELFTEST: PASS
+
+### T2b) CANLI: zai_chat_extractor — gerçek chat (User1 tokenı)
+# komut: zai_chat_extractor.py --id 484fef5a-... --token <ZAI_T1> (token yazılmaz)
+# sohbet: 'Test ve Zipleyip Komutlar' (2026-11-22) → 2 mesaj + 1 dosya kaydı (universalObfusPublicSrc.rar, 21.118.253 bayt)
+# çıktı: sohbet.md + sohbet.json + DOSYA_LISTESI.md + dosyalar/ üretildi — HTTP 200
+
+### T2c) CANLI: zai_profile_analyzer --limit 1 (User1)
+# komut: zai_profile_analyzer.py --token <ZAI_T1> --name User1 --limit 1
+# sonuç: toplam=34 sohbet, dolu=33; 'Yandex Disk Analysis Request' → 83 mesaj, ~2612 araç çağrısı çekildi; PROFILE_REPORT.md üretildi
+
+### T3) 03_WORKLOG_MANAGER: init/append/status/rotate
+[+] rotasyon: WORKLOG_1 → ARCHIVE(+ÖZET), yeni: WORKLOG_2, INDEX+STATE güncel
+güncel      : WORKLOG_2.md (n=2)
+satır       : 3/200 (%1)  |  boyut: 0 KB
+# üretildi: WORKLOG_2.md, WORKLOG_ARCHIVE_1.md, WORKLOG_ARCHIVE_1_OZET.md, INDEX.md, STATE.json(current_worklog=2)
+
+### T4) 04_TASK_STATE_TRACKER: merge kuralı (tasklist amnezisi çözümü)
+[+] merge: 1 mevcut güncellendi (açık kalan: 1), 1 yeni eklendi
+    AÇIK taskler: ['T-001', 'T-002']
+# beklenen: T-001 güncellendi (açık kaldı), yeni task T-002 olarak eklendi, hiçbir task silinmedi
+
+### T5) 05_MODULE_TEST_PROOF: audit denetleyici (kanıtsız done yakalar)
+[+] kanıt kaydedildi: proofs/kanitmod/2026-11-25_1932_demo.txt
+    sha256=90a52d56fa4e3b36...
+# audit çıktısı (beklenen: OK):
+DENETİM: done task=0, ihlal=0
+OK: her 'done' taskin kanıtı mevcut.
+
+### T6) 07_CHAT_MEMORY_TRANSFER/memory_snapshot.py
+[+] MEMORY_CARD.md yazıldı: /home/z/my-project/selftest/proof_run/MEMORY_CARD.md (54 satır)
+# MEMORY_CARD.md üretildi (STATE+tasks+worklog kuyruğundan)
+
+### T7) 02_LIVING_GITHUB/living_github.py
+# setup+push+receipt komutları; gerçek push bu oturumda bu araçla yapıldı (commit geçmişine bak)
+
+=== ÖZET: 7/7 araç test edildi — selftest PASS + canlı API testi PASS ===

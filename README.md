@@ -13,6 +13,21 @@ Kapsam: 3 hesabın son **50 dolu sohbeti** (946 mesaj, ~46.400 araç çağrısı
 | [CHAT_ENVANTERI.md](CHAT_ENVANTERI.md) | İncelenen 50 sohbetin tablosal envanteri (kullanıcı bazında, mesaj ve araç çağrısı sayıları) |
 | [data/chat_stats.json](data/chat_stats.json) | Sohbet künyesinin makine-okunur özeti |
 
+## GLM_Tools v1.0 (2026-11-26 eklendi) — Kalıcı AI Çalışma Sistemi
+
+**Unutma + sandbox kaybı + tasklist amnezisini bitiren sistem:** 10 modül + 6 Python aracı
++ 4 kalıcı prompt. AI oturumları bu depodan durumunu okur, bu depoya push'lar.
+
+| Dosya/Dizin | Ne |
+|---|---|
+| [GLM_Tools/README.md](GLM_Tools/README.md) | **Kullanım kılavuzu** — klasör haritası + altın kurallar |
+| [GLM_Tools/PROMPTS/](GLM_Tools/PROMPTS/) | Her mesaja yapıştırılacak kalıcı promptlar: GOD MOD master (kısa+tam), sandbox hayatta kalma, yeni-chat bootstrap, token şablonu |
+| [VMP_3.9.4_YOL_HARITASI.md](VMP_3.9.4_YOL_HARITASI.md) | x_vmp cevabı: 8 aşamalı ölçülebilir 3.9.4 çıkış planı + saldırı envanteri + "rea" durum raporu |
+| [IDEAS_S_TIER.md](IDEAS_S_TIER.md) | 7 derin S-tier proje önerisi (kırmızı-takım otokapsülü, handler rastgeleci, MazeLink, imgui corpus sözlüğü...) |
+| [REPO_HARITASI.md](REPO_HARITASI.md) | 20 reponun 6 hatta haritası (portföy değil çalışma-alanı çerçevesi) |
+| [SESSION_RECEIPTS/](SESSION_RECEIPTS/) | Oturum fişleri (ne yapıldı + kanıt + açık kalemler + metrikler) |
+| [proofs/glm_tools/](proofs/glm_tools/) | Kurulum kanıtı: 7/7 araç selftest + canlı API testi PASS |
+
 Ham sohbet dökümleri (boyut ve hassasiyet nedeniyle) repoya konmadı; analist ortamda tutuldu.
 
 ## Öne çıkan sonuçlar (TL;DR)

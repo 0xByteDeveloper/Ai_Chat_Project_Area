@@ -1,0 +1,45 @@
+{
+  "counter": 8,
+  "tasks": [
+    {
+      "id": "T-001",
+      "title": "Ölçüm arenası: test_64.exe 3'lü build harness (3.5.1 / 3.9.4 / fork)",
+      "module": "a0-olcum",
+      "status": "done",
+      "created": "2026-11-26 10:00",
+      "updated": "2026-11-26 14:20",
+      "proof": "proofs/a0-olcum/2026-11-26_1420_harness.txt",
+      "notes": ["3 çıktı profili tablosu üretildi"]
+    },
+    {
+      "id": "T-004",
+      "title": "Mutation motoru: polimorfik junk üreteci v1",
+      "module": "a2-mutasyon",
+      "status": "doing",
+      "created": "2026-11-26 13:00",
+      "updated": "2026-11-26 15:00",
+      "proof": null,
+      "notes": []
+    },
+    {
+      "id": "T-005",
+      "title": "Handler tablosu şifreleme (build-başı anahtar)",
+      "module": "a3-handler",
+      "status": "todo",
+      "created": "2026-11-26 13:00",
+      "updated": "2026-11-26 13:00",
+      "proof": null,
+      "notes": []
+    },
+    {
+      "id": "T-006",
+      "title": "Import şifreleme katmanı",
+      "module": "a4-katman",
+      "status": "blocked",
+      "created": "2026-11-26 13:00",
+      "updated": "2026-11-26 15:30",
+      "proof": null,
+      "notes": ["BLOCKED: rea repo URL'i kullanıcıdan bekleniyor"]
+    }
+  ]
+}
