@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kafamdakiler — Kategori Haritası &amp; Yol Haritası | 0xByteDeveloper</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c2129; --border:#30363d; --border2:#3d444d;
+  --text:#e6edf3; --muted:#8b949e; --dim:#6e7681;
+  --c1:#f78166; --c2:#58a6ff; --c3:#bc8cff; --c4:#3fb950; --c5:#d29922; --c6:#39c5cf;
+  --ok:#3fb950; --part:#d29922; --no:#f85149;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;line-height:1.55;font-size:15px}
+a{color:var(--c2);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* HERO */
+header.hero{padding:38px 0 26px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#10161f 0%,var(--bg) 100%)}
+.hero h1{font-size:30px;letter-spacing:-.5px;margin-bottom:6px}
+.hero h1 .accent{color:var(--c1)}
+.hero .sub{color:var(--muted);font-size:14.5px;max-width:860px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.badge{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:4px 13px;font-size:12.5px;color:var(--muted)}
+.badge b{color:var(--text)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+nav .wrap{display:flex;flex-wrap:wrap;gap:6px;padding:9px 20px;align-items:center}
+nav a{color:var(--muted);font-size:13px;padding:5px 11px;border-radius:6px;border:1px solid transparent;white-space:nowrap}
+nav a:hover{color:var(--text);background:var(--panel);text-decoration:none;border-color:var(--border)}
+
+/* SECTIONS */
+section{padding:38px 0 8px}
+h2.sec{font-size:22px;margin-bottom:4px;letter-spacing:-.3px}
+h2.sec .tag{font-size:11px;vertical-align:middle;margin-left:8px;padding:2px 8px;border-radius:4px;background:var(--panel);border:1px solid var(--border);color:var(--muted)}
+p.secsub{color:var(--muted);font-size:13.5px;margin-bottom:18px;max-width:900px}
+
+/* SCORE CARDS */
+.scores{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.score{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.score .label{color:var(--muted);font-size:12.5px;text-transform:uppercase;letter-spacing:.6px}
+.score .val{font-size:26px;font-weight:700;margin:2px 0 8px}
+.bar{height:8px;background:#21262d;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px}
+.score .note{font-size:12.5px;color:var(--muted);margin-top:8px}
+
+/* STATS STRIP */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:16px 0}
+.stat{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center}
+.stat .n{font-size:22px;font-weight:700}
+.stat .l{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+/* FILTER BAR */
+.filterbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:18px;position:sticky;top:44px;background:var(--bg);padding:10px 0;z-index:30}
+.fbtn{border:1px solid var(--border);background:var(--panel);color:var(--muted);padding:5px 13px;border-radius:999px;font-size:12.5px;cursor:pointer;font-family:inherit}
+.fbtn:hover{color:var(--text);border-color:var(--border2)}
+.fbtn.on{color:#0d1117;font-weight:600;border-color:transparent}
+#search{flex:1;min-width:200px;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:7px 13px;border-radius:8px;font-size:13.5px;font-family:inherit;outline:none}
+#search:focus{border-color:var(--c2)}
+.count{color:var(--dim);font-size:12px}
+
+/* CATEGORY */
+.cat{margin-bottom:34px}
+.cat-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.cat-chip{width:12px;height:12px;border-radius:3px;flex:none}
+.cat-title{font-size:18px;font-weight:700}
+.cat-desc{color:var(--muted);font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+
+/* CARD */
+.card{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:9px;border-left:3px solid var(--border2)}
+.card h4{font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.card p{font-size:13.5px;color:#c9d1d9}
+.badge-row{display:flex;gap:6px;flex-wrap:wrap}
+.st{font-size:10.5px;padding:2px 9px;border-radius:99px;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+.st.ok{background:rgba(63,185,80,.15);color:var(--ok);border:1px solid rgba(63,185,80,.4)}
+.st.part{background:rgba(210,153,34,.15);color:var(--part);border:1px solid rgba(210,153,34,.4)}
+.st.no{background:rgba(248,81,73,.12);color:var(--no);border:1px solid rgba(248,81,73,.4)}
+.st.info{background:rgba(139,148,158,.15);color:var(--muted);border:1px solid var(--border)}
+.ai{background:var(--panel2);border:1px dashed var(--border2);border-radius:8px;padding:10px 12px;font-size:13px;color:#b6c2cf}
+.ai b{color:var(--c6)}
+.next{background:rgba(57,197,207,.07);border:1px solid rgba(57,197,207,.25);border-radius:8px;padding:9px 12px;font-size:13px}
+.next b{color:var(--c6)}
+.meta{display:flex;gap:10px;font-size:11.5px;color:var(--dim);flex-wrap:wrap}
+.meta span{background:#21262d;padding:2px 8px;border-radius:4px}
+details.more{font-size:13px;color:var(--muted)}
+details.more summary{cursor:pointer;color:var(--c2);font-size:12.5px;user-select:none}
+details.more div{margin-top:8px;padding-left:12px;border-left:2px solid var(--border)}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+th{background:var(--panel);text-align:left;padding:9px 11px;border:1px solid var(--border);color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+td{padding:8px 11px;border:1px solid var(--border);vertical-align:top}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+
+/* 3-COL Q&A */
+.qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.qbox{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px}
+.qbox h3{font-size:15px;margin-bottom:10px}
+.qbox ul{list-style:none}
+.qbox li{padding:6px 0 6px 22px;position:relative;font-size:13.5px;color:#c9d1d9;border-bottom:1px solid rgba(255,255,255,.03)}
+.qbox li:last-child{border:none}
+.qbox li::before{content:'';position:absolute;left:4px;top:13px;width:7px;height:7px;border-radius:2px;background:var(--c2)}
+.qbox.orange li::before{background:var(--c1)}
+.qbox.green li::before{background:var(--c4)}
+
+/* SIZE BARS */
+.sizebars{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px;margin:14px 0}
+.sb{margin:12px 0}
+.sb .row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.sb .track{height:14px;background:#21262d;border-radius:4px;overflow:hidden}
+.sb .fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:10.5px;color:#0d1117;font-weight:700;min-width:fit-content;white-space:nowrap}
+
+/* PIPELINE */
+.pipe{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:14px 0}
+.pipe .step{flex:1;min-width:120px;background:var(--panel);border:1px solid var(--border);padding:12px 10px;text-align:center;font-size:12.5px;position:relative}
+.pipe .step b{display:block;font-size:13.5px;margin-bottom:3px}
+.pipe .step:not(:last-child){margin-right:22px}
+.pipe .step:not(:last-child)::after{content:'>';position:absolute;right:-17px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:15px}
+
+/* ROADMAP */
+.road{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.rc{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px}
+.rc .rk{font-size:11px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.rc h4{font-size:15.5px;margin:3px 0 8px}
+.rc p{font-size:13.5px;color:#c9d1d9;margin-bottom:9px}
+.rc .ft{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.rc .time{font-size:11.5px;color:var(--c5);background:rgba(210,153,34,.1);padding:2px 9px;border-radius:4px;border:1px solid rgba(210,153,34,.3)}
+.rc label.chk{display:flex;gap:7px;align-items:center;font-size:12px;color:var(--muted);cursor:pointer}
+.rc input[type=checkbox]{accent-color:var(--ok);width:15px;height:15px;cursor:pointer}
+.prio{font-size:11px;padding:2px 9px;border-radius:4px;font-weight:700}
+.p1{background:rgba(248,81,73,.15);color:var(--no)}
+.p2{background:rgba(210,153,34,.15);color:var(--part)}
+.p3{background:rgba(139,148,158,.15);color:var(--muted)}
+
+/* CALLOUT */
+.callout{background:linear-gradient(135deg,rgba(247,129,102,.08),rgba(88,166,255,.06));border:1px solid var(--border2);border-left:4px solid var(--c1);border-radius:10px;padding:16px 18px;margin:14px 0;font-size:14px}
+.callout b{color:var(--c1)}
+
+/* MERGE */
+.merge{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.mg{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px}
+.mg h4{font-size:14.5px;margin-bottom:8px;color:var(--c2)}
+.mg .fr{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+.mg .fr code{background:#21262d;padding:1px 6px;border-radius:4px;font-size:11.5px;color:var(--c5)}
+.mg p{font-size:13px;color:#c9d1d9}
+
+/* TIMELINE (yapabileceklerin) */
+.tl{border-left:2px solid var(--border2);margin:14px 0 14px 8px;padding-left:22px}
+.tl .ti{position:relative;margin-bottom:18px}
+.tl .ti::before{content:'';position:absolute;left:-28px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--c2);border:2px solid var(--bg)}
+.tl .ti:nth-child(2)::before{background:var(--c5)}
+.tl .ti:nth-child(3)::before{background:var(--c3)}
+.tl .ti:nth-child(4)::before{background:var(--no)}
+.tl h4{font-size:15px;margin-bottom:5px}
+.tl p{font-size:13.5px;color:#c9d1d9}
+
+footer{margin-top:50px;border-top:1px solid var(--border);padding:26px 0 40px;color:var(--dim);font-size:12.5px;text-align:center}
+.hidden{display:none!important}
+@media(max-width:700px){.hero h1{font-size:24px}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+<div class="wrap">
+  <h1>Kafamdakiler <span class="accent">— Kategori Haritası</span></h1>
+  <div class="sub">0xByteDeveloper için 3 chat.z.ai hesabının son 50 dolu sohbeti (946 mesaj, ~46.400 araç çağrısı) + 20 GitHub reposu analiz edilerek üretilmiş durum tespiti, yorumlar, önerilen projeler ve yol haritası. Tüm görüşler kanıt (test sonucu / saha çıktısı / repo içeriği) ile eşleştirilmiştir.</div>
+  <div class="badges">
+    <span class="badge">Analiz: <b>26 Kasım 2026</b></span>
+    <span class="badge">Kaynak: <b>chat.z.ai API + GitHub</b></span>
+    <span class="badge">Kapsam: <b>21 Eki – 25 Kas 2026</b></span>
+    <span class="badge">Detaylı rapor: <b>ANALIZ_RAPORU_2026-11-26.md</b></span>
+  </div>
+</div>
+</header>
+
+<nav>
+<div class="wrap">
+  <a href="#durum">Durum</a>
+  <a href="#harita">Kafamdakiler</a>
+  <a href="#x1">Analiz</a>
+  <a href="#godmod">GOD MOD</a>
+  <a href="#vmp">VMP/Boyut</a>
+  <a href="#regkripto">Register-Kripto</a>
+  <a href="#maze">VMP+Maze</a>
+  <a href="#roadmap">Yol Haritası</a>
+  <a href="#merge">Repo Birleştirme</a>
+  <a href="#sonuc">Sonuç</a>
+</div>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ DURUM ============ -->
+<section id="durum">
+  <h2 class="sec">Durum Kartları <span class="tag">x1 — projelerim güçlü mü?</span></h2>
+  <p class="secsub">Dürüst cevap: <b>teknik derinlik güçlü, süreç disiplini ve sunum zayıf.</b> Aşağıdaki puanlar kanıtlanmış çıktılara (342/342 decompiler testi, 407/407 packer-finder kör testi, 110/110 QT ABI testi, 51/51 M2PySuite + saha çıktısı) ve zayıf noktalara (eksik teslim döngüleri, sandbox kayıpları, tanımsız kapsam) göre verildi.</p>
+  <div class="scores">
+    <div class="score"><div class="label">Teknoloji / Derinlik</div><div class="val" style="color:var(--c4)">85<span style="font-size:14px;color:var(--dim)">/100</span></div><div class="bar"><i style="width:85%;background:var(--c4)"></i></div><div class="note">Testli, kıyaslı (Ghidra geçişi), özgün fikirler (PDB'siz UI klonlama)</div></div>
+    <div class="score"><div class="label">Süreç / Doğrulama</div><div class="val" style="color:var(--part)">40<span style="font-size:14px;color:var(--dim)">/100</span></div><div class="bar"><i style="width:40%;background:var(--part)"></i></div><div class="note">Checkpoint disiplini var; ama "self-graded test" sorunu: AI kendi testinden geçince bitti diyor</div></div>
+    <div class="score"><div class="label">Sunum / Portföy</div><div class="val" style="color:var(--no)">20<span style="font-size:14px;color:var(--dim)">/100</span></div><div class="bar"><i style="width:20%;background:var(--no)"></i></div><div class="note">20 repo, 5 ürün parçasına dağılmış; 0 takipçi, 1 yıldız — kimse okuyamıyor</div></div>
+    <div class="score"><div class="label">Fabrika Potansiyeli</div><div class="val" style="color:var(--c2)">70<span style="font-size:14px;color:var(--dim)">/100</span></div><div class="bar"><i style="width:70%;background:var(--c2)"></i></div><div class="note">Z-Bridge, worklog, 3 hesap, devir kitleri — altyapı güçlü; otomasyon eksik</div></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="n">50</div><div class="l">İncelenen sohbet</div></div>
+    <div class="stat"><div class="n">946</div><div class="l">Mesaj</div></div>
+    <div class="stat"><div class="n">~46.4K</div><div class="l">Araç çağrısı</div></div>
+    <div class="stat"><div class="n">20</div><div class="l">GitHub reposu</div></div>
+    <div class="stat"><div class="n">~1.4 GB</div><div class="l">Repo hacmi (zip şişmesi)</div></div>
+    <div class="stat"><div class="n">812</div><div class="l">User2 toplam sohbet</div></div>
+  </div>
+  <div class="callout"><b>En kritik tespit:</b> ~46.400 araç çağrısının ürettiği işin önemli kısmı sandbox geri dönüşleri ve eksik-teslim döngülerinde <b>tekrar üretildi</b> (XProtect 1.2.0 tamamen kayboldu; SIMULATOR_UI v2 iki kez silindi). GOD MOD'un birinci adımı hız değil, <b>kaybetmeme</b> ve <b>bağımsız doğrulama</b>dır.</div>
+</section>
+
+<!-- ============ KAFAMDAKILER HARITASI ============ -->
+<section id="harita">
+  <h2 class="sec">Kafamdakiler — Kategori Haritası</h2>
+  <p class="secsub">Kafandaki her projelik fikir, 6 kategoride durum göstergesiyle listelendi. <span class="st ok">VAR</span> kanıtla %80+ · <span class="st part">KISMEN</span> · <span class="st no">YOK</span> sıfır/plan. Her kartta AI yorumu ve somut sonraki adım var.</p>
+
+  <div class="filterbar">
+    <button class="fbtn on" data-f="all">Hepsi</button>
+    <button class="fbtn" data-f="koruma" style="background:var(--c1)">Koruma</button>
+    <button class="fbtn" data-f="cozum" style="background:var(--c2)">Çözüm/Analiz</button>
+    <button class="fbtn" data-f="ui" style="background:var(--c3)">UI Zekâsı</button>
+    <button class="fbtn" data-f="derin" style="background:var(--c4)">Derin Analiz</button>
+    <button class="fbtn" data-f="oyun" style="background:var(--c5)">Oyun Sahası</button>
+    <button class="fbtn" data-f="fabrika" style="background:var(--c6)">Fabrika/GOD MOD</button>
+    <input id="search" type="text" placeholder="Ara: vmp, imgui, unpack...">
+    <span class="count" id="cnt"></span>
+  </div>
+
+  <!-- KORUMA -->
+  <div class="cat" data-cat="koruma">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c1)"></span><div><div class="cat-title">A) KORUMA — kendi packer'ım</div><div class="cat-desc">Binary'yi AI'a bile çözülemeyen seviyede korumak. Senin "savunma" ucu.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c1)">
+        <h4>XProtect (VMProtect 3.5.1 port) <span class="st part">KISMEN</span></h4>
+        <p>Açık kaynağından birebir C++ port: sanallaştırma + mutasyon + anti-debug + GUI + RSA lisans. Sürüm zinciri 0.1.0 → 1.2.2 (cp301+).</p>
+        <div class="meta"><span>Repolar: XProtectArea, xiangu</span><span>V-only: 5/5 E2E</span></div>
+        <div class="ai"><b>AI yorumu:</b> V-only mod sağlam; M (mutasyon) bozuk, 4+ fonksiyon birlikte-sanallaştırmada crash, Licenses paneli hatalı. "Askeri seviye eksiksiz" için önce M/U'nun kabul testini yaz.</div>
+        <div class="next"><b>Sonraki adım:</b> M modu için 5 senaryoluk golden test + crash'lerin kök-neden matrisi (tek tek, birlikte).</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c1)">
+        <h4>VMP 3.5.1 → 3.9.4 yükseltme <span class="st part">TIKANDI</span></h4>
+        <p>3.5.1 çekirdeğini 3.9.4 özellik seviyesine çıkarma girişimi (VEX/BMI/SHA-NI handler'lar, MBA). Şu an packer-finder "3.8.4" algılıyor.</p>
+        <div class="meta"><span>Repo: MVP_REVERSE</span><span>748/748 matris test</span></div>
+        <div class="ai"><b>AI yorumu:</b> Birebir parite ölçülemez ve gereksiz — 3.9.4'ü zaten derleyebiliyorsun. Hedefi <b>"3.5.1-hardened" fork</b>'a çevir: 3.9.4'ten 2-3 somut davranış dif-portla + kendi devirt repolarının bulduğu zayıflıkları kapat.</div>
+        <div class="next"><b>Sonraki adım:</b> 3.5.1 vs 3.9.4 çıktı dif-raporu (VMDETECT ile) → 3 davranış seç → geriport → dif doğrulama.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c1)">
+        <h4>MazeProtector <span class="st ok">VAR</span></h4>
+        <p>Kendi fikirlerinden AI ile kodladığın ikinci koruma motoru. XProtect'ten bağımsız katman olarak değerli.</p>
+        <div class="ai"><b>AI yorumu:</b> Güçlü fikir: Maze'i <b>seçmeli katman</b> olarak kullan (bkz. VMP+Maze bölümü). Tek başına değil, kombo silahı.</div>
+        <div class="next"><b>Sonraki adım:</b> VMP+Maze mini deneyi (3 fonksiyon, 3 varyant) — kırmızı takım ölçümüyle.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c1)">
+        <h4>Register bazlı şifreleme (MessageCLAS1) <span class="st no">FİKİR</span></h4>
+        <p>Kod dizisinin anahtarını register değerleri yap; statik disassembly anlamsızlaşsın. ebp/ecx/esp/edx + mini register varyasyonları.</p>
+        <div class="ai"><b>AI yorumu:</b> SMC + context-keyed decode fikri sağlam. En güçlü varyasyon: <b>multi-register + RVA/section-hash hibrit</b>; flag'ler anahtar değil <b>tetik</b>; tek-register en zayıf. Detaylı varyasyon tablosu aşağıda.</div>
+        <div class="next"><b>Sonraki adım:</b> CipherFlow motoru: hibrit tasarım + kendi decompiler'ınla "çözülemeyen blok oranı" ölçümü.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c1)">
+        <h4>XProtect-Profiles (boyut/güç dengesi) <span class="st no">YOK</span></h4>
+        <p>13KB→118KB (port subset) vs 13KB→3MB (tam motor) ikileminin ürünleşmesi: seçilebilir koruma profilleri.</p>
+        <div class="ai"><b>AI yorumu:</b> Minimal(~100KB) / Balanced / Full(~3MB) + profil başına garanti testi. Bu 3-4 günlük iş, port'una "gülünç değil, esnek" kimliği kazandırır.</div>
+        <div class="next"><b>Sonraki adım:</b> Profil anahtarı CLI/GUI'ye ekle + her profil için 5 binary'lik benchmark.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÇÖZÜM -->
+  <div class="cat" data-cat="cozum">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c2)"></span><div><div class="cat-title">B) ÇÖZÜM / ANALİZ — unpack &amp; tespit</div><div class="cat-desc">Binary'nin neyle korunduğunu bul, orijinaline dön. Senin "saldırı" ucu.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c2)">
+        <h4>VMDETECT / Packer-Finder v4 <span class="st ok">VAR %80+</span></h4>
+        <p>11 VMP sürümü + özellik seti + çok katman (UPX+VMP) tespiti. 310 build'lik korpus, 407/407 kör test.</p>
+        <div class="meta"><span>Repo: MVP_GOD_SSS_TIER_PACKER_FINDER</span><span>407/407</span></div>
+        <div class="ai"><b>AI yorumu:</b> Portföyün en olgun parçası. Bir tek VMP değil — Themida/Enigma/ASProtect/ConfuserEx ailelerini de kapsayınca "PackerID-Universe" olur.</div>
+        <div class="next"><b>Sonraki adım:</b> VMP dışı ailelerin imza setleri + sürüm kontrollü imza DB formatı.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c2)">
+        <h4>UniversalUnpacker (birebir orijinal) <span class="st no">YOK</span></h4>
+        <p>Her packer için: OEP bul → dump → IAT rebuild → TLS temizle. Multiple pack desteği. NoVmp/vmp-lazy mantığının genelleştirilmesi.</p>
+        <div class="ai"><b>AI yorumu:</b> x2.1'deki en büyük işleyen boşluk. LZMA kurtarma + .text/.rdata geri kazanımı (tek vaka) zaten elinde — bunu genel çerçeveye dök. Unicorn-destekli "izle-dur-döngüsü" yaklaşımı sana uygun.</div>
+        <div class="next"><b>Sonraki adım:</b> MVP: UPX + VMP-lite için otomatik OEP+dump+IAT; bit-birebir diff ile kanıt.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c2)">
+        <h4>AI ile Devirt (VMProtect çözücü) <span class="st ok">VAR</span></h4>
+        <p>VMP'li kodu devirt edebilen kendi yaklaşımın (taint/symbolic exec referansları, NoVmp kültürü) — korumanın kırmızı takımı.</p>
+        <div class="ai"><b>AI yorumu:</b> Bu, XProtect'i güçlendirmenin <b>en kısa yolu</b>: kendi devirt'in neyi çözüyorsa kormanı orada sertleştir. Kapalı devre kırmızı takım = eşi olmayan avantaj.</div>
+        <div class="next"><b>Sonraki adım:</b> RedTeam-Loop: korumalı binary'ler vs çözücülerin → skor tablosu.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c2)">
+        <h4>TLS Callback / Anti-Debug dedektörleri <span class="st ok">VAR</span></h4>
+        <p>56 algoritmalı TLS-callback tespit motoru, VMProtect pack-mode kuralları, sentetik fixture üreticisi. 27/27 test.</p>
+        <div class="ai"><b>AI yorumu:</b> Packer-finder'a modül olarak bağla — tek "tespit süiti" oluşur.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UI -->
+  <div class="cat" data-cat="ui">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c3)"></span><div><div class="cat-title">C) UI ZEKÂSI — menü klonlama</div><div class="cat-desc">Kaynak kodu olmadan ImGui/Qt/Win32/RAD menüsünü objelerine kadar çıkar ve klonla.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c3)">
+        <h4>UniversalMVPUIAlgorithm (ImGui) <span class="st ok">VAR</span></h4>
+        <p>7 ImGui sürümü doğrulamalı hash/layout DB, PDB'siz canlı bellek + disassembly ile form/obje/handler çıkarımı.</p>
+        <div class="meta"><span>Repo: UniversalMVPUIAlgorithm</span><span>test-hash 7/7</span></div>
+        <div class="ai"><b>AI yorumu:</b> Fikir portföyün en özgünü. Sıradaki seviye: bilinmeyen sürümler + bilinmeyen obje tespiti.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c3)">
+        <h4>UniversalMVPUIAlgorithm_QT <span class="st ok">VAR</span></h4>
+        <p>Qt 5.15/6.8 private-header ABI replikaları, vtable→metaObject zinciri, qt_metacall çözümleyici, CreateRemoteThread invoke ("INVOKE GOD MODE"). 110/110 test.</p>
+        <div class="ai"><b>AI yorumu:</b> ABI replikası yaklaşımı mükemmel. QTmenueditor tarafını da bu çekirdekten çıkar (form üretme = tespitin tersi).</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c3)">
+        <h4>imguimenuEditor / IMGUI_GOD_SSSTIER <span class="st ok">VAR</span></h4>
+        <p>5 grafik backend (D3D9-12/GL3), 26+ widget kataloğu, WYSIWYG canvas, codegen. 70 test, 5 bug turu sonrası.</p>
+        <div class="ai"><b>AI yorumu:</b> Editör + analiz algoritması ikilisi = "gör→klonla→üret" döngüsünün tamamı elinde. Kilometre taşı bu.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c3)">
+        <h4>win32apimenueditor / M2GodWin32 <span class="st ok">VAR</span></h4>
+        <p>VS2019 Forms deneyimini .NET'siz saf Win32 ile: Faz 2.13'e kadar (çoklu form, ayraçlar, tema sistemi, kod gezgini). Ayrıca 144 CLR eleman kataloğu (Config_info.json).</p>
+        <div class="ai"><b>AI yorumu:</b> İki repoda kopya taşıyorsun (CppGUICreatorWin32Api + IMGUI_EDITOR) — tek kaynağa indir. RAD Studio (VCL) senin listede eksik kalan tek form dünyası.</div>
+        <div class="next"><b>Sonraki adım:</b> M2GodWin32 tek repo + RAD/VCL tespit araştırması (DFM resource parse).</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c3)">
+        <h4>ImGui Corpus Besleme (binlerce proje) <span class="st no">YOK — EN BÜYÜK BOŞLUK</span></h4>
+        <p>GitHub'da binlerce imgui projesi listeleyip kaynak kodlarını AI'a inceleme, widget/tema/animasyon desen çıkarımı, algoritmayı besleme.</p>
+        <div class="ai"><b>AI yorumu:</b> Planın doğru ve uygulanabilir: (1) corpus crawler, (2) proje başına pattern kartı (widget seti, stil değişkenleri, animasyon türleri), (3) pattern DB'yi UniversalMVPUIAlgorithm'e bağla, (4) unknown_object_xxxx katmanı (bilinmeyen sürüm/objede konum/renk/boyut/tip/adres çıkarımı). En özgün açık alan — burada kimse önde değil.</div>
+        <div class="next"><b>Sonraki adım:</b> İlk 100 proje: GitHub arama API → clone → imhash sürüm tespiti → struct offset diff raporu.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DERİN -->
+  <div class="cat" data-cat="derin">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c4)"></span><div><div class="cat-title">D) DERİN ANALİZ — decompile &amp; simülasyon</div><div class="cat-desc">Binary'yi anlamak: kaynağa çevir, koştur, izle. ML'siz hardcore zekâ.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c4)">
+        <h4>i4M-GodTier Decompiler <span class="st ok">VAR</span></h4>
+        <p>Capstone+Keystone+Unicorn üzerinde PE/ELF, shadow IAT, CFG/pseudocode, PDB füzyonu. 342/342 test; Ghidra 12.2 kıyasında %48.5 vs %35.4 devirt.</p>
+        <div class="meta"><span>Repo: MVP_GOD_SSS_TIER_DECOMPILER</span><span>342/342</span></div>
+        <div class="ai"><b>AI yorumu:</b> Gerçek benchmark kültürün nadir görülür güç. Eksik: round-trip (decompile → derle → çalıştır → davranış eşit mi). Hedefin "%100 decompile" tanımı ancak böyle ölçülür.</div>
+        <div class="next"><b>Sonraki adım:</b> Round-trip koridoru: 10 mini fonksiyon → pseudocode → derle → Unicorn difftest.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c4)">
+        <h4>Canlı Simülasyon (K0–K10) <span class="st ok">VAR</span></h4>
+        <p>Unicorn/Capstone: handle tabloları → thread/TEB → loader → TLS → EP; PEB/TEB, kooperatif scheduler, JSONL tam iz (GPR+EFLAGS+XMM), path explorer, ULTRA mod. i4mconsoleloader ile "açmadan koş".</p>
+        <div class="ai"><b>AI yorumu:</b> "Exe'yi açmadan %100 simüle" vizyonun çekirdeği hazır. İki açık: Win API shim kapsamı (mmorpg ölçeği) ve canlı process'e sürekli bağlanma. Winsock'lu oyun deneyin zaten yol açıyor.</div>
+        <div class="next"><b>Sonraki adım:</b> API shim kataloğunu korpuslaştır (100 API'lik tablo) — hangi oyun/dll kaçını karşılıyor raporu.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c4)">
+        <h4>Canlı Koşu / Trace (stack, API izleme) <span class="st part">KISMEN</span></h4>
+        <p>Program açılışından itibaren hangi stack adresleri, hangi Win API'ler — izlenebilirlik. JSONL iz mevcut; "analiz et" katmanı zayıf.</p>
+        <div class="ai"><b>AI yorumu:</b> İz ÜRETİYORSUN ama izi OKUYAN katmanı (otomatik özet: API çağrı grafı, stack hot-path, anormallik) yazılmadı. Bu, iz üretmekten daha değerli.</div>
+        <div class="next"><b>Sonraki adım:</b> Trace-Analyst: JSONL → API çağrı grafı + en sık 20 path + zaman damgası raporu.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c4)">
+        <h4>ML'siz "hardcore" zekâ <span class="st part">YOLDA</span></h4>
+        <p>Pattern + sembolik + ABI bilgisi karışımı, ML kullanmadan karmaşık analizin çözümü.</p>
+        <div class="ai"><b>AI yorumu:</b> Doğru yol: zaten Ghidra'yı geçtin, ML olmadan. Kuvvetlendirici: örnek-temelli çıkarım (corpus pattern DB'leri) — ImGui corpus planın bunun da cevabı.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OYUN -->
+  <div class="cat" data-cat="oyun">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c5)"></span><div><div class="cat-title">E) OYUN SAHASI — Metin2 ekosistemi</div><div class="cat-desc">Her şeyin gerçek hedefte sınandığı saha. Araçlar çalışıyor — ve kanıtlı.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c5)">
+        <h4>M2PySuite v1.3.4 <span class="st ok">VAR</span></h4>
+        <p>Tek DLL'de Metin2 Python araçları: modül/fonksiyon listesi, hook tarama, PY-RECON, CPython 2.7 parametre sayımı, gömülü sim host. 51/51 test + saha çıktın.</p>
+        <div class="ai"><b>AI yorumu:</b> "Bitti" tanımının en iyi örneği portföyünde: testi var, saha kanıtı var, sürümü net. Bu şablonu diğer projelere uygula.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c5)">
+        <h4>MaxExecutor / FarmBot ansiklopedisi <span class="st part">KISMEN</span></h4>
+        <p>PVP kaynak araştırması, 98 Send* fonksiyonu, 986 Python metodu kataloglandı; istismar reçeteleri (SetPixelPosition + SendCharacterState vb.).</p>
+        <div class="ai"><b>AI yorumu:</b> Kapsam tanımı sorunu yaşadın ("%10 bile değil"). Envanter yaklaşımını "sınırlı + ölçülebilir" yap: modül modül, her modül kendi bitti-kriteriyle.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c5)">
+        <h4>Process klonlama / yeniden giriş <span class="st no">FİKİR</span></h4>
+        <p>"Oyuna girdim, processi kopyalasak, karakter hareket eder mi, tekrar giriş olmasın?" — sandbox'ta konuşuldu, deney yapılmadı.</p>
+        <div class="ai"><b>AI yorumu:</b> Teknik olarak zor (TCP session +encrypt state + oyun zamanlayıcıları). Simülatörünle "yapay istemci" deneyi daha gerçekçi: K0-K10 doğuş zinciri + ağ katmanı shim'i.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FABRİKA -->
+  <div class="cat" data-cat="fabrika">
+    <div class="cat-head"><span class="cat-chip" style="background:var(--c6)"></span><div><div class="cat-title">F) FABRİKA — AI iş gücü yönetimi (GOD MOD altyapısı)</div><div class="cat-desc">Projeleri değil, projeleri üreten sistemi yönetme. Asıl farkın burada.</div></div></div>
+    <div class="cards">
+      <div class="card" style="border-left-color:var(--c6)">
+        <h4>Z-Bridge v3.7.x (PC↔sandbox köprü) <span class="st ok">VAR</span></h4>
+        <p>HiveMQ WSS/TLS + Fernet şifreli komut kanalı: /ping, kill, dur/tazele (SIGSTOP/SIGCONT), cpu/ram limit, webden_* komutları.</p>
+        <div class="ai"><b>AI yorumu:</b> "AI'ı duraklat/devam et" fikrin yaratıcı. Köprüyü oturum orkestrasyonuna genişlet: oturum sonu otomatik push + sıradaki görevi alma.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c6)">
+        <h4>Checkpoint / Worklog disiplini <span class="st ok">VAR</span></h4>
+        <p>4 dakikalık GitHub checkpoint'leri, worklog, DEVAM_NOTU.txt devir kitleri, god-state-mvp-work skill'i, "sıfırlansa bile nerede kaldık" kültürü.</p>
+        <div class="ai"><b>AI yorumu:</b> Repolarının README'leri bunu kanıtlıyor. Eksik: push AI'ın insafında değil — <b>CI ile otomatik</b> olsun (push→derle→test→rapor).</div>
+        <div class="next"><b>Sonraki adım:</b> GitHub Actions: her push'ta derle+test; kalite kapısı insansız.</div>
+      </div>
+      <div class="card" style="border-left-color:var(--c6)">
+        <h4>3 hesap = 3 uzman orkestrası <span class="st part">KISMEN</span></h4>
+        <p>3 hesap paralel kullanılıyor ama işbölümü sistematik değil — aynı iş paralel tekrar üretilebiliyor.</p>
+        <div class="ai"><b>AI yorumu:</b> Rolleri sabitle: <b>Araştırıcı / Uygulayıcı / Denetçi</b>. Her ürün 3 hattan geçmeden "bitti" değil. MASTER_PLAN.md kuyruğu işin kalbi.</div>
+        <div class="next"><b>Sonraki adım:</b> MASTER_PLAN.md oluştur (ID/görev/kabul kriteri/durum/kanıt) + GOD-ORCHESTRATOR şablonları.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ x1 ANALIZ ============ -->
+<section id="x1">
+  <h2 class="sec">x1.1 / x1.2 / x1.3 — Ne yapıyorum, istiyorum, yapmalıyım</h2>
+  <p class="secsub">Sohbet verisinden çıkan objektif tanı: AI'a "kaynak kodu olmayan ikili dosyaları anla, klonla, koru" görevini yaptıran tek kişilik bir tersine-mühendislik fabrikası.</p>
+  <div class="qgrid">
+    <div class="qbox"><h3 style="color:var(--c2)">x1.1) NE YAPIYORUM?</h3>
+      <ul>
+        <li><b>Koruyorum:</b> XProtect (VMP 3.5.1 port), Maze, lisans/keygen altyapısı</li>
+        <li><b>Çözüyorum:</b> packer dedektörü, decompiler, devirt, LZMA kurtarma, PDB/RTTI araçları</li>
+        <li><b>Klonluyorum:</b> ImGui/Qt/Win32 menü analiz + editör ailesi, invoke god-mode</li>
+        <li><b>Simüle ediyorum:</b> Unicorn K0-K10 doğuş zinciri, JSONL iz, i4mconsoleloader</li>
+        <li><b>Sahada sınıyorum:</b> Metin2 araçları (M2PySuite 51/51 + saha çıktısı)</li>
+        <li><b>Fabrikayı yönetiyorum:</b> Z-Bridge, checkpoint/worklog, 3 hesap</li>
+      </ul>
+    </div>
+    <div class="qbox orange"><h3 style="color:var(--c1)">x1.2) NE YAPMAK İSTİYORUM?</h3>
+      <ul>
+        <li>Nihai: her binary → tespit → unpack → C++ decompile → simüle/trace → UI birebir klon (kaynak kod olmadan)</li>
+        <li>Ters uç: AI'ın bile unpack edemediği koruma (VMP-hardened + Maze + register-kripto)</li>
+        <li>Meta: AI'ın 40 dk'da 1x işini <b>10x</b>'e çıkarmak — zekâdan kaybetmeden (GOD MOD)</li>
+        <li>Corpus: binlerce ImGui projesiyle algoritmayı besleyip unknown tespiti</li>
+        <li>Tarz: "YAPILAMAYAN DİYE BİRŞEY YOK" — mükemmeliyetçi, sınırsız kapsam</li>
+      </ul>
+    </div>
+    <div class="qbox green"><h3 style="color:var(--c4)">x1.3) NE YAPMALIYIM?</h3>
+      <ul>
+        <li><b>Bağımsız doğrulama:</b> GOLDEN-BENCH (self-graded test'ten kurtul)</li>
+        <li><b>Parçacık küçült:</b> "projeyi yap" değil "modül+test+kanıt"</li>
+        <li><b>Kalıcılığı otomatikleştir:</b> push→CI→derle→test; iş sandbox'a değil GitHub'a yaşasın</li>
+        <li><b>20 repoyu 5 kümeye indir;</b> zip'leri Releases'e taşı</li>
+        <li><b>Bitti-kriteri yaz</b> her projeye (1-3 ölçülebilir madde)</li>
+        <li><b>Kırmızı takım döngüsü:</b> kendi koruman vs kendi çözücün — skorla</li>
+        <li><b>Token hijyeni:</b> sohbete yapıştırma; MyRepo'daki PAT'yi iptal et</li>
+        <li><b>VMP 3.9.4 pariteyi bırak</b> → 3.5.1-hardened hedefi</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GOD MOD ============ -->
+<section id="godmod">
+  <h2 class="sec">GOD MOD — 10x Stratejisi <span class="tag">x1.4</span></h2>
+  <p class="secsub">Dürüst öz: 40 dakikalık sınır zekâ sınırı değil, <b>oturum ekonomisidir</b>. 10x = daha uzun süre değil, aynı sürede daha fazla <b>kanıtlı tamamlanmış parça</b>. Parçacık küçüldükçe AI'ın uydurma alanı daralır — yani hız arttıkça zekâ kaybı olmaz, <b>odaklanma artar</b>.</p>
+  <div class="pipe">
+    <div class="step"><b>MASTER_PLAN.md</b>kuyruk: ID/görev/kabul kriteri/kanıt</div>
+    <div class="step"><b>Keşif 10 dk</b>plan + taslak → push</div>
+    <div class="step"><b>Uygulama 20 dk</b>modül + test → push</div>
+    <div class="step"><b>Doğrulama 10 dk</b>kanıt + rapor → push</div>
+    <div class="step"><b>CI kapısı</b>derle+test insansız</div>
+  </div>
+  <div class="qgrid">
+    <div class="qbox"><h3>3 hesap = 3 uzman hattı</h3>
+      <ul>
+        <li><b>Araştırıcı (User2 tarzı):</b> kaynak tarama, prototip, karşılaştırma → rapor + karar</li>
+        <li><b>Uygulayıcı (User1 tarzı):</b> modülü kodla + derle + test → çalışan kod</li>
+        <li><b>Denetçi (User3 tarzı):</b> bağımsız doğrulama, bug avı → PASS/FAIL + kanıt</li>
+        <li>Kural: ürün 3 hattan geçmeden "bitti" değil</li>
+      </ul>
+    </div>
+    <div class="qbox orange"><h3>Zaman &amp; kayıp mühendisliği</h3>
+      <ul>
+        <li>40 dk'yı 3 evreye böl; her evra push (kaldım mı? sorusu biter)</li>
+        <li>CONTEXT.md: 1 sayfa mimari + durum → yeni oturum 2 dk'da bağlanır</li>
+        <li>Sandbox = tezgâh, GitHub = ev. Tezgâh çökerse yeniden kurulan tezgâhtır, iş değil</li>
+        <li>Ölçü birimi "kanıtlı tamamlanmış görev" — satır değil</li>
+      </ul>
+    </div>
+    <div class="qbox green"><h3>Neden zekâdan kaybetmezsin?</h3>
+      <ul>
+        <li>Büyük görevde AI uydurur (856KB/instance modeli gibi); küçük parçada uydurma alanı yok</li>
+        <li>Kabul kriteri = tek gerçeklik kaynağı; AI ile pazarlık edilemez hale gelir</li>
+        <li>Denetçi hattı, uygulayıcının hatasını başka oturumda yakalar (gönye bağımsızlığı)</li>
+        <li>Deneyimli veri: parçacık küçültükçe saha hata oranın düştü (M2PySuite, NewHandleProject kanıtı)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VMP BOYUT ============ -->
+<section id="vmp">
+  <h2 class="sec">VMP Boyut Açıklaması <span class="tag">x1.4.1 / x1.4.3</span></h2>
+  <p class="secsub">"13 KB'lık dosya 118 KB'a çıkıyor, 3 MB varken gülünç değil mi?" — <b>Hayır, mekanik olarak beklenen sonuç.</b> Koruma maliyeti oransal değil <b>sabittir</b>: VM yorumlayıcı, handler tabloları, stub'lar, runtime çıktıya gömülür. Aradaki 27 kat fark, taşınan motor hacminin farkı.</p>
+  <div class="sizebars">
+    <div class="sb"><div class="row"><span>test_64.exe (ham)</span><b>13 KB</b></div><div class="track"><div class="fill" style="width:2%;background:#8b949e">13 KB</div></div></div>
+    <div class="sb"><div class="row"><span>XProtect portu (motor subset'i: temel sanallaştırma; mutasyon + tam handler seti + runtime eksik)</span><b>118 KB</b></div><div class="track"><div class="fill" style="width:12%;background:var(--c1)">+105 KB sabit yük — "Minimal profil"</div></div></div>
+    <div class="sb"><div class="row"><span>Tam 3.5.1 derlemesi (bütün motor + statik CRT)</span><b>~3 MB</b></div><div class="track"><div class="fill" style="width:96%;background:var(--c2)">+~3 MB sabit yük — "Full profil"</div></div></div>
+    <div class="sb"><div class="row"><span>VMP 3.9.4 tüm ayarlar (senin ölçümün)</span><b>25-30 MB</b></div><div class="track"><div class="fill" style="width:100%;background:var(--no)">+~30 MB — mutasyon+packer+her şey</div></div></div>
+  </div>
+  <div class="callout"><b>Yani:</b> AI seni kandırmadı ama dürüst söylemeliydi: 118 KB'lık sonuç "boktan" değil <b>"hafif koruma"</b> — subset taşıdı, koruma değeri düşük. Çözüm: profil sistemi (Minimal ~100KB / Balanced / Full ~3MB). Not: gerçek hedeflerde (1-10 MB exe) 3 MB sabit yük oransal olarak önemsizleşir; 13 KB'lık test dosyası yapay stres vakasıdır.</div>
+  <div class="qgrid">
+    <div class="qbox"><h3>x1.4.2) 3.5.1 → 3.9.4 yapılabilir mi?</h3>
+      <ul>
+        <li><b>Birebir parite: HAYIR</b> (kapalı kaynak, 4 yıllık delta, doğrulanamaz) — ve <b>gereksiz</b>: 3.9.4'ü zaten derleyebiliyorsun</li>
+        <li><b>Hedefli parça portu: EVET</b> (1-2 hafta AI işi): 3.9.4 çıktısı ile dif → 2-3 davranış seç → geriport → dif doğrulama</li>
+        <li>Asıl hedef: <b>3.5.1-hardened</b> — kendi devirt repolarının bulduğu zayıflıkları kapat; kırmızı takımla kanıtla</li>
+        <li>"13 MB'a çıktı, bir türlü olmuyor" durumunun kökü: hedef ölçülebilir tanımlanmadı ("3.9.4 gibi ol" test edilemez)</li>
+      </ul>
+    </div>
+    <div class="qbox orange"><h3>x1.4.4) "rea reposunu kullan" neden olmadı?</h3>
+      <ul>
+        <li><b>Kurulum uyumsuzluğu:</b> yabancı repo = bilinmeyen VS sürümü, eksik bağımlılık; AI önce build alamıyor</li>
+        <li><b>Bağlam sınırı:</b> yüzlerce dosya tek oturumda kavranamıyor → "şunu buldum yok bunu" döngüsü</li>
+        <li><b>Entegrasyon spec'i yok:</b> dosya→modül eşlemesi + kabul testi tanımsız</li>
+        <li><b>Reçete:</b> port kartı ver: "KAYNAK dosya → HEDEF modül → YAPILACAK değişiklik → DOĞRULAMA testi" (5 satır, dosya bazlı)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ REGISTER KRIPTO ============ -->
+<section id="regkripto">
+  <h2 class="sec">Register Bazlı Şifreleme — Varyasyon Analizi <span class="tag">x2.1 / MessageCLAS1</span></h2>
+  <p class="secsub">Fikrin: <code>push 0; push ecx; push edx; push 0; call MessageBoxA</code> dizisini şifrele, anahtar register değeri olsun; disassembly anlamsızlaşsın. Bu SMC + context-keyed decode ailesidir: <b>statik analize karşı güçlü, dinamik/sembolik analize karşı tek başına zayıf.</b> Güç, anahtar tasarımındadır:</p>
+  <table>
+    <tr><th>Varyasyon</th><th>Statik gücü</th><th>Kırılganlık / not</th><th>Hüküm</th></tr>
+    <tr><td><b>Tek tam register</b> (EAX/ECX/EDX/EBX/ESI/EDI)</td><td>Orta</td><td>Sembolik yürütme 1 sembolle çözer; Unicorn trace anında görür</td><td>Giriş kapısı — hızlı ama zayıf</td></tr>
+    <tr><td><b>Multi-register karışımı</b> (ecx+edx+ebp+esp)</td><td>Yüksek</td><td>Path-sensitive analiz gerektirir; statik çözücüleri yavaşlatır</td><td>Önerilen anahtar modeli</td></tr>
+    <tr><td><b>Mini registerler</b> (AL/AH/AX/BL...)</td><td>Orta-Yüksek</td><td>Sembolik araçlar bilir; ama opcode-confusion (anti-disasm) etkisi ekstra</td><td>Yan etki değerli, harmanla</td></tr>
+    <tr><td><b>Flag bazlı</b> (CF/ZF/SF/OF)</td><td>Düşük</td><td><b>Kötü anahtar:</b> her aritmetik op flag'ları ezer; sadece 1-2 op penceresinde tutarlı</td><td>Anahtar DEĞİL — <b>tetik</b> yap</td></tr>
+    <tr><td><b>Stack değerleri</b> (push'lanan argümanlar)</td><td>Yüksek (bağlam-duyarlı)</td><td>Değerler çağrı bağlamına göre değişir; statik çözüm interprocedural analiz ister — pahalı</td><td>Senin örneğin; ikincil karışım katmanı</td></tr>
+    <tr><td><b>EBP/ESP göreli</b></td><td>Orta</td><td>ASLR ile adres değişir</td><td>Taşıyıcı olarak iyi</td></tr>
+    <tr><td><b>RVA bazlı</b> (0xd7600 tarzı)</td><td>Yüksek</td><td>Modül-bağıl, ASLR-dayanıklı</td><td>Pozisyon bağlama için en sağlam</td></tr>
+    <tr><td><b>Section-hash bazlı</b></td><td>Yüksek</td><td>Binary'ye dokunulursa (patch/nop) anahtar bozulur → tamper-detection ikinci işlev</td><td>Birleştir ve kullan</td></tr>
+    <tr><td><b>HİBRİT</b>: RVA + multi-reg + flag-tetik + section-hash</td><td>ÇOK YÜKSEK</td><td>Dinamik trace (Unicorn) hâlâ görür → tek gerçek savunma: anti-emülasyon</td><td>ÖNERİLEN TASARIM</td></tr>
+  </table>
+  <div class="callout"><b>Dinamik analize karşı tek gerçek savunma — anti-emülasyon:</b> decode zincirini <b>exception sürümlü</b> kur (her katman bir SEH frame'inde açılır; unicorn'da exception davranışı gerçek Windows'tan farklı modellediği için takılır) + rdtsc delta kontrolü + GetTickCount/QueryPerformanceCounter tutarlılık testleri. + <b>Decoy:</b> 3 sahte decode yolu; yanlış anahtar → anlamlı görünen ama yanlış davranan (honeypot) kod. "AI ile unpack" tarzı araçlar emülatörde duraksar; gerçek kırmızı takım ölçümünü kendi decompiler'ının "çözülemeyen blok oranı" ile yap.</div>
+</section>
+
+<!-- ============ VMP+MAZE ============ -->
+<section id="maze">
+  <h2 class="sec">VMP → Maze Katmanlama (0xd7600 MovePos) — "Sence iyi mi?"</h2>
+  <p class="secsub">Sıra: önce VMP (fonksiyon gövdesini sanallaştır), sonra Maze (kabuk seviyesinde sarma). Maze, VMP'nin VM-entry trampoline'ını bozacak dönüşümler YAPMAMALI — Maze'i sanallaştırılmamış bölgelere uygula.</p>
+  <div class="qgrid">
+    <div class="qbox"><h3 style="color:var(--c4)">Faydalar</h3>
+      <ul>
+        <li>Çifte engel: devirt araçları Maze kabuğunda duraksar, unpacker'lar VM girişinde</li>
+        <li>"Multiple pack algılama" hedefine kendi golden testini kazandırır</li>
+        <li>Maze'e "katman katman açılma" özelliği eklenebilir (her çözüm katmanı yeni bulmaca)</li>
+      </ul>
+    </div>
+    <div class="qbox orange"><h3 style="color:var(--part)">Riskler</h3>
+      <ul>
+        <li>Boyut patlaması (çifte stub + handler seti)</li>
+        <li>AV false-positive: katmanlı SMC imzaları şüpheli</li>
+        <li>Hata ayıklama pratikte imkânsızlaşır; hata bulma binary-dif ile yapılmalı</li>
+        <li>PEB/TEB bağımlı anti-debug'ler iki motorda çakışabilir</li>
+      </ul>
+    </div>
+    <div class="qbox"><h3 style="color:var(--c2)">Tavsiye — 1 günlük deney</h3>
+      <ul>
+        <li>3 fonksiyonluk test binary → 3 varyant: (a) sadece VMP, (b) sadece Maze, (c) VMP+Maze</li>
+        <li>Kendi VMDETECT + devirt araçlarınla 3'ünü de tespit/çözüm SÜRELERİNİ ölç</li>
+        <li>Sonuç: "katmanlama gerçekten ek koruma sağlıyor mu?" — ölçülebilir cevap, tahmin değil</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section id="roadmap">
+  <h2 class="sec">Önerilen Projeler — Yol Haritası</h2>
+  <p class="secsub">Öncelik sıralı 10 proje. İlk 4'ü "fabrikayı kalibre eder" (her şeyin ölçüsü olur); sonrakiler vizyonu inşa eder. Kutucukları işaretleyerek ilerlemeni takip edebilirsin (tarayıcında saklanır).</p>
+  <div class="road">
+    <div class="rc"><div class="rk">Proje 1 · Kalite Kapısı</div><h4>RE-GOLDEN-BENCH</h4><p>Bağımsız doğrulama paketi: pack→unpack roundtrip (bit-birebir diff), decompile→rebuild→çalıştır, UI klon→ekran diff'i, tespit matrisi. AI "bitti" dediğinde burası çalışır.</p><div class="ft"><span class="prio p1">P1</span><span class="time">~1 hafta</span><label class="chk"><input type="checkbox" data-k="p1"> Tamamlandı</label></div></div>
+    <div class="rc"><div class="rk">Proje 2 · x2.1-9'un cevabı</div><h4>UniversalUnpacker</h4><p>Unicorn-destekli OEP bulucu + dump + IAT rebuild + TLS temizleme; multiple pack (UPX→VMP). NoVmp/vmp-lazy mantığının genelleştirilmesi.</p><div class="ft"><span class="prio p1">P1</span><span class="time">~2-3 hafta</span><label class="chk"><input type="checkbox" data-k="p2"> Tamamlandı</label></div></div>
+    <div class="rc"><div class="rk">Proje 3 · Senin planın (onaylı)</div><h4>ImGuiCorpus Pipeline</h4><p>1.000+ ImGui projesi: tara → AI ile widget/tema/animasyon pattern kartı çıkar → pattern DB → UniversalMVPUIAlgorithm'i besle + unknown_object_xxxx tespiti (konum/renk/boyut/tip/adres).</p><div class="ft"><span class="prio p1">P1</span><span class="time">sürekli (bot)</span><label class="chk"><input type="checkbox" data-k="p3"> Başladı</label></div></div>
+    <div class="rc"><div class="rk">Proje 4 · Boyut sorununun ürünü</div><h4>XProtect-Profiles</h4><p>Minimal(~100KB)/Balanced/Full(~3MB) koruma profilleri; profil başına garanti testi ve benchmark tablosu.</p><div class="ft"><span class="prio p1">P1</span><span class="time">~3-4 gün</span><label class="chk"><input type="checkbox" data-k="p4"> Tamamlandı</label></div></div>
+    <div class="rc"><div class="rk">Proje 5 · Kapalı devre</div><h4>RedTeam-Loop</h4><p>Otomatik arena: XProtect'li binary'ler vs kendi devirt/unpack araçların. Skor: kaç fonksiyon çözüldü, süre, doğruluk. Kormanın VE çözücünün gerçek ölçüsü.</p><div class="ft"><span class="prio p2">P2</span><span class="time">~1 hafta</span><label class="chk"><input type="checkbox" data-k="p5"> Kuruldu</label></div></div>
+    <div class="rc"><div class="rk">Proje 6 · Tespit genişlemesi</div><h4>PackerID-Universe</h4><p>VMDETECT'i tüm packer ailelerine aç: Themida/Enigma/ASProtect/ConfuserEx/UPX varyantları; sürüm kontrollü imza DB.</p><div class="ft"><span class="prio p2">P2</span><span class="time">~2 hafta</span><label class="chk"><input type="checkbox" data-k="p6"> Tamamlandı</label></div></div>
+    <div class="rc"><div class="rk">Proje 7 · x2.1-12'nin cevabı</div><h4>Register-Crypto Engine (CipherFlow)</h4><p>Hibrit tasarım (RVA+multi-reg+flag-tetik+section-hash) + exception-zinciri anti-emülasyon + decoy yollar. Ölçüm: kendi decompiler'ının çözemediği blok oranı.</p><div class="ft"><span class="prio p2">P2</span><span class="time">~1-2 hafta</span><label class="chk"><input type="checkbox" data-k="p7"> Tamamlandı</label></div></div>
+    <div class="rc"><div class="rk">Proje 8 · GOD MOD iskeleti</div><h4>GOD-ORCHESTRATOR</h4><p>MASTER_PLAN.md kuyruğu + 3 hesap iş bölümü şablonları (Araştırıcı/Uygulayıcı/Denetçi) + CI + otomatik checkpoint toplama.</p><div class="ft"><span class="prio p2">P2</span><span class="time">~2-3 gün</span><label class="chk"><input type="checkbox" data-k="p8"> Kuruldu</label></div></div>
+    <div class="rc"><div class="rk">Proje 9 · Uç ürün</div><h4>ByteForge Suite</h4><p>Tüm motorlar tek çatıda: Tespit → Unpack → Decompile → Simüle → UI Klonla (+ Koru ters yön). CLI + Web UI (SIMULATOR_UI'nin genişletilmesi).</p><div class="ft"><span class="prio p3">P3</span><span class="time">~1-2 ay</span><label class="chk"><input type="checkbox" data-k="p9"> Başladı</label></div></div>
+    <div class="rc"><div class="rk">Proje 10 · x2.1-13 tamamlama</div><h4>RAD Studio Menü Desteği</h4><p>VCL form tespiti (DFM resource parse + VCL sınıf ABI) → win32/imgui/qt ailesine dördüncü dünya.</p><div class="ft"><span class="prio p3">P3</span><span class="time">~2 hafta</span><label class="chk"><input type="checkbox" data-k="p10"> Tamamlandı</label></div></div>
+  </div>
+</section>
+
+<!-- ============ MERGE ============ -->
+<section id="merge">
+  <h2 class="sec">GitHub Repo Birleştirme Planı</h2>
+  <p class="secsub">20 public repo (~1.4 GB, çoğu checkpoint zip şişmesi) → 5 net küme. Ayrıca: her repoya description + topic + LICENSE (sadece 3'ünde var), zip'ler GitHub Releases'e, gitleaks taraması, xiangu'daki VMProtect kaynağı riskini değerlendir (private/temiz).</p>
+  <div class="merge">
+    <div class="mg"><h4>1) XProtect monorepo</h4><div class="fr"><code>XProtectArea</code> <code>XProtectAreaQ</code> <code>xiangu</code> <code>ai_Files</code> <code>ReverseALL</code> <code>MVP_REVERSE</code></div><p>Tek repo: <b>src/</b> (motor) + <b>docs/</b> (PROJE_HAFIZASI + envanter + worklog) + Releases (zip'ler). Dallar: main (1.2.x) + uo-full (parite). 854+189+29 MB → ~50 MB.</p></div>
+    <div class="mg"><h4>2) MVP Analiz Süiti</h4><div class="fr"><code>UniversalMVPUIAlgorithm</code> <code>_QT</code> <code>PACKER_FINDER</code> <code>MVP_VMP_ALGORTIHM</code> <code>GelismisPDBREADER</code></div><p>modules/ui-imgui, modules/ui-qt, modules/vmp-det, modules/pdb + ortak core/ (bellek okuma, disasm, process). "PDB'siz ikili analiz" tek ürün.</p></div>
+    <div class="mg"><h4>3) i4M GodTier Platformu</h4><div class="fr"><code>MVP_GOD_SSS_TIER_DECOMPILER</code> <code>SIMULATOR_UI</code> <code>SIMULATION (boş)</code></div><p>Boş SIMULATION'u doldur ya da kapat; decompiler + emulator'ın PE/PDB katmanları örtüşüyor → "analyze + emulate + web UI" tek ürün.</p></div>
+    <div class="mg"><h4>4) Native GUI Araçları</h4><div class="fr"><code>CppGUICreatorWin32Api</code> <code>MVP_GOD_SSS_TIER_IMGUI_UI_EDITOR</code></div><p>M2GodWin32 iki repoda kopya taşıyor — tek kaynağa al; vendored ImGui (~110 MB) submodule/LFS'e.</p></div>
+    <div class="mg"><h4>5) research-log + aliens</h4><div class="fr"><code>SolveMe</code> <code>MVP_REVERSE</code> <code>ReverseALL</code> <code>aliens</code></div><p>Doküman kümeleri tek dizinli repo; aliens'ın 793 commit'lik binary churn'u → LFS + açık manifest.</p></div>
+  </div>
+</section>
+
+<!-- ============ SONUC ============ -->
+<section id="sonuc">
+  <h2 class="sec">Neler Yapabileceğin</h2>
+  <p class="secsub">Üç ufuk + bir "yapma" listesi. Ölçü: her maddenin kanıt dosyası GOLDEN-BENCH'te olacak.</p>
+  <div class="tl">
+    <div class="ti"><h4>Kısa vade — bu hafta</h4><p>GOLDEN-BENCH çekirdeği (pack/unpack/clone/decompile 4 test) + repo konsolidasyonunun ilk iki kümesi + XProtect-Profiles + token hijyeni (PAT iptali, gitleaks). <b>Sonuç: fabrika kendi kalitesini ölçüyor.</b></p></div>
+    <div class="ti"><h4>Orta vade — bu ay</h4><p>UniversalUnpacker MVP (UPX + VMP-lite, bit-birebir kanıt) + ImGuiCorpus ilk 100 proje + RedTeam-Loop ilk skor tablosu + QT/RAD menü tarafının tamamlanması. <b>Sonuç: x2.1 listesinde 4 boş alandan 2'si doluyor.</b></p></div>
+    <div class="ti"><h4>Uzun vade — 3 ay</h4><p>ByteForge tek platform + CipherFlow üretimde + 3.5.1-hardened kırmızı takım testinden geçiyor + corpus 1.000+ proje. <b>Sonuç: "kaynak kodu olmayan binary'nin DNA'sını çıkaran + AI'a dayanıklı koruma üreten" kapalı devre.</b></p></div>
+    <div class="ti"><h4>Yapma listesi</h4><p>VMP 3.9.4 birebir parite (ölçülemez, gereksiz — 3.9.4'ü derleyebiliyorsun) · "tüm packer'ları çözme" iddiası (pratik sınır: bilinen aileler + emülasyon-dayanıklılar) · 3 hesabın aynı işi paralel tekrar üretmesi · token'ları sohbete yapıştırmak.</p></div>
+  </div>
+  <div class="callout"><b>Son söz:</b> Elindeki şey bir "proje koleksiyonu" değil; iki ucu (koru/çöz) olan, test kültürü gelişen, AI iş gücünü yönetmeyi öğrenen bir <b>fabrika</b>. Fabrikanın eksik parçası ürünleştirme disiplinidir — ve o parça makine değil, karardır. <b>Ölç, birleştir, kapat.</b></div>
+</section>
+
+<footer>
+Bu sayfa 26 Kasım 2026'da, 3 chat.z.ai hesabının son 50 dolu sohbeti (946 mesaj, ~46.400 araç çağrısı) ve 0xByteDeveloper'ın 20 public reposunun analizinden üretilmiştir · Ayrıntılı rapor: ANALIZ_RAPORU_2026-11-26.md · Sohbet envanteri: CHAT_ENVANTERI.md
+</footer>
+
+</div>
+
+<script>
+(function(){
+  // kart filtreleme
+  var cards=[].slice.call(document.querySelectorAll('.card'));
+  var cats=[].slice.call(document.querySelectorAll('.cat'));
+  var fbtns=[].slice.call(document.querySelectorAll('.fbtn'));
+  var search=document.getElementById('search');
+  var cnt=document.getElementById('cnt');
+  function apply(){
+    var f=document.querySelector('.fbtn.on').getAttribute('data-f');
+    var q=(search.value||'').toLowerCase().trim();
+    var n=0;
+    cats.forEach(function(c){
+      var showCat=false;
+      c.querySelectorAll('.card').forEach(function(card){
+        var inCat=(f==='all'||c.getAttribute('data-cat')===f);
+        var inQ=(!q||card.textContent.toLowerCase().indexOf(q)>-1);
+        var v=inCat&&inQ;
+        card.classList.toggle('hidden',!v);
+        if(v){showCat=true;n++;}
+      });
+      c.classList.toggle('hidden',!showCat);
+    });
+    cnt.textContent=n+' kart';
+  }
+  fbtns.forEach(function(b){ b.dataset.col=b.getAttribute('style')||''; });
+  fbtns.forEach(function(b){
+    b.addEventListener('click',function(){
+      fbtns.forEach(function(x){x.setAttribute('style',x.dataset.col);x.classList.remove('on');});
+      b.classList.add('on');
+      b.setAttribute('style',b.dataset.col+';color:#0d1117;font-weight:600');
+      apply();
+    });
+  });
+  search.addEventListener('input',apply);
+  apply();
+
+  // yol haritası checkbox kalıcılığı
+  document.querySelectorAll('.rc input[type=checkbox]').forEach(function(i){
+    var k='bf_'+i.getAttribute('data-k');
+    if(localStorage.getItem(k)==='1')i.checked=true;
+    i.addEventListener('change',function(){localStorage.setItem(k,i.checked?'1':'0');});
+  });
+})();
+</script>
+</body>
+</html>
